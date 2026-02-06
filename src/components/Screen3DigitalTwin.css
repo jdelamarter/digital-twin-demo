@@ -1,0 +1,145 @@
+.screen3 {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.screen3-background {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/assets/page3-background.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 0;
+}
+
+.screen3-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1;
+}
+
+/* Verified Badge */
+.verified-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 50px;
+  font-family: 'Optimistic Display', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 20px;
+  color: #E7E7E7;
+}
+
+.verified-badge svg {
+  flex-shrink: 0;
+}
+
+/* Shoe Title */
+.shoe-title {
+  font-family: 'Optimistic Display', sans-serif;
+  font-weight: 800;
+  font-size: 34px;
+  line-height: 38px;
+  letter-spacing: -1.02px;
+  color: #FFFFFF;
+  text-align: center;
+  margin-top: 12px;
+  margin-bottom: 0;
+}
+
+/* Shoe Container */
+.shoe-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 85vw;
+  height: 60vh;
+  z-index: 10;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Rotation Icon */
+.rotation-icon {
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  top: 60%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 15;
+}
+
+/* Description Text */
+.description-text {
+  position: absolute;
+  bottom: 140px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Optimistic Display', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  color: #FFFFFF;
+  text-align: center;
+  z-index: 20;
+}
+
+/* Meta Horizon Logo */
+.meta-horizon-logo {
+  width: 36px;
+  height: 36px;
+  display: block;
+  margin: 0 auto 12px auto;
+}
+
+/* Frosted Glass Button */
+.claim-button {
+  position: absolute;
+  bottom: 64px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 306px;
+  height: 60px;
+  background: rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 41px;
+  border: none;
+  font-family: 'Optimistic Display', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 20px;
+  color: #FFFFFF;
+  cursor: pointer;
+  z-index: 20;
+  
+  /* Inner shadows for glassmorphism effect */
+  box-shadow: 
+    inset 0 -2px 1px rgba(255, 255, 255, 0.12),
+    inset 2px 2px 2px rgba(255, 255, 255, 0.40),
+    inset 0 -2px 1px rgba(255, 255, 255, 0.24);
+  
+  transition: all 0.3s ease;
+}
+
+.claim-button:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.claim-button:active {
+  transform: translateX(-50%) scale(0.98);
+}

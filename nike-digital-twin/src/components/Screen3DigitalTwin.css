@@ -1,0 +1,302 @@
+.screen3 {
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  background-color: #080121;
+}
+
+.screen3-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #080121;
+  background-image: url('/page3-background.png');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  z-index: 0;
+}
+
+.screen3-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1;
+}
+
+.verified-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: max(46px, calc(env(safe-area-inset-top) + 16px));
+  font-family: 'Optimistic Display', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 20px;
+  color: #FFFFFF;
+  background-color: #3e17b4;
+  padding: 8px 16px;
+  border-radius: 100px;
+}
+
+.verified-badge svg {
+  flex-shrink: 0;
+}
+
+.shoe-title {
+  font-family: 'Optimistic Display', sans-serif;
+  font-weight: 800;
+  font-size: 34px;
+  line-height: 38px;
+  letter-spacing: -1.02px;
+  color: #FFFFFF;
+  text-align: center;
+  margin-top: 8px;
+  margin-bottom: 0;
+}
+
+.shoe-container {
+  position: fixed;
+  top: 0;
+  left: -3vw;
+  right: 3vw;
+  bottom: 0;
+  margin: auto;
+  width: 110vw;
+  height: 102.85vh;
+  max-height: 1210px;
+  z-index: 10;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nike-swoosh-white {
+  position: absolute;
+  width: 166px;
+  height: 59px;
+  right: -20px;
+  bottom: max(210px, calc(env(safe-area-inset-bottom) + 190px));
+  z-index: 5;
+}
+
+.rotation-icon {
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  top: 60%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 15;
+}
+
+/* Meta Card Background with rounded top corners and blur */
+.meta-card-background {
+  position: absolute;
+  bottom: -160px;
+  left: 20px;
+  right: 20px;
+  height: max(385px, calc(env(safe-area-inset-bottom) + 365px));
+  background: rgba(30, 10, 70, 0.4);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border-radius: 40px 40px 0 0;
+  z-index: 15;
+  box-shadow: 
+    inset 0 -2px 1px rgba(255, 255, 255, 0.12),
+    inset 2px 2px 2px rgba(255, 255, 255, 0.40),
+    inset 0 -2px 1px rgba(255, 255, 255, 0.24);
+}
+
+/* Centered text with Horizon logo */
+.description-text {
+  position: absolute;
+  bottom: max(110px, calc(env(safe-area-inset-bottom) + 90px));
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  font-family: 'Optimistic Display', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #FFFFFF;
+  text-align: center;
+  z-index: 20;
+  width: fit-content;
+  max-width: 90vw;
+}
+
+.meta-horizon-logo {
+  width: 36px;
+  height: 36px;
+  display: block;
+  margin: 2px auto 12px auto;
+  position: relative;
+  top: 4px;
+}
+
+.nike-logo-card {
+  width: 36px;
+  height: auto;
+  display: block;
+  margin: 0 auto 12px auto;
+  filter: brightness(0) invert(1);
+}
+
+.text-transition-wrapper {
+  position: relative;
+  min-height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Centered claim button */
+.claim-button {
+  position: absolute;
+  bottom: max(38px, calc(env(safe-area-inset-bottom) + 28px));
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  width: 270px;
+  height: 50px;
+  background: rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 41px;
+  border: none;
+  font-family: 'Optimistic Display', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 20px;
+  color: #FFFFFF;
+  cursor: pointer;
+  z-index: 20;
+  box-shadow: 
+    inset 0 -2px 1px rgba(255, 255, 255, 0.12),
+    inset 2px 2px 2px rgba(255, 255, 255, 0.40),
+    inset 0 -2px 1px rgba(255, 255, 255, 0.24);
+  transition: background 0.3s ease, transform 0.1s ease;
+}
+
+.claim-button:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.claim-button:active {
+  transform: scale(0.98);
+}
+
+.claim-button:disabled {
+  cursor: default;
+}
+
+.claim-button:disabled:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.button-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.meta-logo {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+/* Boost Carousel Styles */
+.boost-carousel-container {
+  position: absolute;
+  bottom: max(130px, calc(env(safe-area-inset-bottom) + 110px));
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 0 20px;
+  z-index: 20;
+}
+
+.boost-carousel {
+  width: 100%;
+  max-width: 240px;
+  overflow: hidden;
+  position: relative;
+}
+
+.carousel-track {
+  display: flex;
+  width: 100%;
+}
+
+.carousel-slide {
+  min-width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-slide img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 16px;
+}
+
+.carousel-nav {
+  background: rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.3s ease, transform 0.1s ease;
+  box-shadow: 
+    inset 0 -2px 1px rgba(255, 255, 255, 0.12),
+    inset 2px 2px 2px rgba(255, 255, 255, 0.40),
+    inset 0 -2px 1px rgba(255, 255, 255, 0.24);
+}
+
+.carousel-nav:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.carousel-nav:active {
+  transform: scale(0.95);
+}
+
+.carousel-nav svg {
+  width: 24px;
+  height: 24px;
+}
