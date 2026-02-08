@@ -5,7 +5,7 @@ import './Screen3DigitalTwin.css';
 
 const Screen3DigitalTwin = () => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [currentCard, setCurrentCard] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(1); // Start at index 1 to match current layout
 
   const boostCards = [
     '/boost-cards/card-1.png',
@@ -19,12 +19,16 @@ const Screen3DigitalTwin = () => {
     setIsExpanded(true);
   };
 
-  const nextCard = () => {
-    setCurrentCard((prev) => (prev + 1) % boostCards.length);
-  };
-
-  const prevCard = () => {
-    setCurrentCard((prev) => (prev - 1 + boostCards.length) % boostCards.length);
+  const handleDragEnd = (event, info) => {
+    const threshold = 50; // Minimum drag distance to trigger a swipe
+    
+    if (info.offset.x < -threshold && currentIndex < boostCards.length - 1) {
+      // Swiped left, go to next card
+      setCurrentIndex(currentIndex + 1);
+    } else if (info.offset.x > threshold && currentIndex > 0) {
+      // Swiped right, go to previous card
+      setCurrentIndex(currentIndex - 1);
+    }
   };
 
   return (
@@ -78,16 +82,16 @@ const Screen3DigitalTwin = () => {
         
         <motion.div
           className="meta-card-background"
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 20, left: 0, right: 0 }}
           animate={{ 
             opacity: 1, 
             y: 0,
-            height: isExpanded ? 'max(520px, calc(env(safe-area-inset-bottom) + 500px))' : 'max(385px, calc(env(safe-area-inset-bottom) + 365px))',
-            left: isExpanded ? 0 : 20,
-            right: isExpanded ? 0 : 20,
+            height: isExpanded ? '660px' : 'max(385px, calc(env(safe-area-inset-bottom) + 365px))',
+            left: 0,
+            right: 0,
           }}
           transition={{ 
-            duration: 0.6, 
+            duration: isExpanded ? 0.3 : 0.6, 
             delay: isExpanded ? 0 : 1.8,
             ease: 'easeInOut'
           }}
@@ -98,10 +102,10 @@ const Screen3DigitalTwin = () => {
           initial={{ opacity: 0, y: 10 }}
           animate={{ 
             opacity: 1, 
-            y: isExpanded ? -80 : 0,
+            y: isExpanded ? -275 : 0,  // Move up to maintain distance from top of card
           }}
           transition={{ 
-            duration: 0.6, 
+            duration: isExpanded ? 0.3 : 0.6, 
             delay: isExpanded ? 0 : 2.0,
             ease: 'easeInOut'
           }}
@@ -122,7 +126,7 @@ const Screen3DigitalTwin = () => {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.3 }}
+                  transition={{ duration: 0.2 }}
                 >
                   Wearable now in Nike World
                 </motion.span>
@@ -132,7 +136,7 @@ const Screen3DigitalTwin = () => {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.3 }}
+                  transition={{ duration: 0.2 }}
                 >
                   Choose in-game boost
                 </motion.span>
@@ -148,33 +152,57 @@ const Screen3DigitalTwin = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 20 }}
-              transition={{ duration: 0.4, delay: 0.3 }}
+              transition={{ duration: 0.3, delay: 0.1 }}
             >
-              <button className="carousel-nav prev" onClick={prevCard} aria-label="Previous card">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                  <path d="M15 18L9 12L15 6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </button>
-              
-              <div className="boost-carousel">
-                <motion.div 
-                  className="carousel-track"
-                  animate={{ x: -currentCard * 100 + '%' }}
-                  transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                >
-                  {boostCards.map((card, index) => (
-                    <div key={index} className="carousel-slide">
+              <motion.div 
+                className="boost-cards-row"
+                drag="x"
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.1}
+                onDragEnd={handleDragEnd}
+              >
+                {boostCards.map((card, index) => {
+                  const position = index - currentIndex;
+                  const isCenter = position === 0;
+                  const isVisible = Math.abs(position) <= 1;
+                  
+                  // Calculate scale and opacity based on position
+                  const scale = isCenter ? 1 : 0.77; // 151/196 ≈ 0.77
+                  const opacity = isCenter ? 1 : 0.2;
+                  
+                  // Card dimensions - based on height 196px, width appears to be ~157px
+                  const fullCardWidth = 157; // Actual rendered card width
+                  const gap = 12; // Gap between card edges
+                  
+                  // Spacing calculation:
+                  // Distance from center of center card to center of adjacent card
+                  // = (fullCardWidth / 2) + gap + (fullCardWidth * 0.77 / 2)
+                  const spacing = (fullCardWidth / 2) + gap + ((fullCardWidth * 0.77) / 2);
+                  
+                  return (
+                    <motion.div
+                      key={index}
+                      className="boost-card"
+                      animate={{
+                        scale,
+                        opacity: isVisible ? opacity : 0,
+                        x: position * spacing,
+                      }}
+                      transition={{
+                        duration: 0.5,
+                        ease: 'easeInOut'
+                      }}
+                      style={{
+                        position: 'absolute',
+                        left: '50%',
+                        marginLeft: `-${fullCardWidth / 2}px`,
+                      }}
+                    >
                       <img src={card} alt={`Boost card ${index + 1}`} />
-                    </div>
-                  ))}
-                </motion.div>
-              </div>
-
-              <button className="carousel-nav next" onClick={nextCard} aria-label="Next card">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                  <path d="M9 18L15 12L9 6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </button>
+                    </motion.div>
+                  );
+                })}
+              </motion.div>
             </motion.div>
           )}
         </AnimatePresence>
@@ -194,7 +222,7 @@ const Screen3DigitalTwin = () => {
               className="button-content"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.3, delay: 0.2 }}
+              transition={{ duration: 0.2, delay: 0.1 }}
             >
               <img 
                 src="/logo/MetaHorizon Logo_White.png" 

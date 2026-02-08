@@ -1,8 +1,15 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import RotatingShoe from './RotatingShoe';
 import './Screen3DigitalTwin.css';
 
 const Screen3DigitalTwin = () => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const handleChooseBoost = () => {
+    setIsExpanded(true);
+  };
+
   return (
     <motion.div
       className="screen3"
@@ -71,12 +78,28 @@ const Screen3DigitalTwin = () => {
           </svg>
         </motion.div>
         
-        {/* Description Text */}
+        {/* Meta Card Background */}
+        <motion.div
+          className="meta-card-background"
+          initial={{ height: 40 }}
+          animate={{ 
+            height: isExpanded ? 600 : 40
+          }}
+          transition={{ duration: 0.6, ease: "easeInOut" }}
+        />
+
+        {/* Description Text - Nike Logo and Text */}
         <motion.div
           className="description-text"
           initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 2.0 }}
+          animate={{ 
+            opacity: 1, 
+            y: isExpanded ? -560 : 0  // Move up by the same amount the card grows (600px - 40px = 560px)
+          }}
+          transition={{ 
+            opacity: { duration: 0.6, delay: 2.0 },
+            y: { duration: 0.6, ease: "easeInOut", delay: isExpanded ? 0 : 2.0 }
+          }}
         >
           <img 
             src="/assets/logos/MetaHorizon Logo_White.png" 
@@ -94,6 +117,7 @@ const Screen3DigitalTwin = () => {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 2.2 }}
+          onClick={handleChooseBoost}
         >
           Claim in Meta Horizon
         </motion.button>

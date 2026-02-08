@@ -98,6 +98,23 @@
   z-index: 20;
 }
 
+/* Meta Card Background */
+.meta-card-background {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  max-width: 474px;
+  margin: 0 auto;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 32px 32px 0 0;
+  box-shadow: inset 0 2px 2px 0 rgba(255, 255, 255, 0.3);
+  z-index: 18;
+}
+
 /* Meta Horizon Logo */
 .meta-horizon-logo {
   width: 36px;

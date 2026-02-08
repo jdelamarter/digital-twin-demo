@@ -25,6 +25,15 @@ function App() {
     };
   }, []);
 
+  // Change body background color based on current screen
+  useEffect(() => {
+    if (currentScreen === 3) {
+      document.body.style.backgroundColor = '#080121';
+    } else {
+      document.body.style.backgroundColor = '#FFFFFF';
+    }
+  }, [currentScreen]);
+
   return (
     <div className="app">
       {/* Persistent Nike Logo for screens 1 and 2 */}
