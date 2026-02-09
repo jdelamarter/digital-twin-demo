@@ -6,8 +6,59 @@ import './Screen3DigitalTwin.css';
 const Screen3DigitalTwin = () => {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const handleChooseBoost = () => {
-    setIsExpanded(true);
+  const openMetaHorizonApp = () => {
+    // Detect device type
+    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+    const isAndroid = /Android/i.test(navigator.userAgent);
+    const isMobile = isIOS || isAndroid;
+
+    if (isMobile) {
+      // Try Universal Link first (Meta's web URL that may auto-open app if installed)
+      const universalLink = 'https://www.meta.com/experiences/horizon-worlds/';
+      
+      // Try opening universal link
+      window.location.href = universalLink;
+      
+      // If universal link doesn't work, redirect to app store after delay
+      const redirectTimeout = setTimeout(() => {
+        if (isIOS) {
+          // iOS App Store
+          window.location.href = 'https://apps.apple.com/app/meta-horizon-worlds/id1622015883';
+        } else if (isAndroid) {
+          // Google Play Store
+          window.location.href = 'https://play.google.com/store/apps/details?id=com.meta.horizon.worlds';
+        }
+      }, 2500);
+      
+      // Clear timeout if page loses focus (indicates something opened)
+      const handleBlur = () => {
+        clearTimeout(redirectTimeout);
+        window.removeEventListener('blur', handleBlur);
+      };
+      
+      const handleVisibilityChange = () => {
+        if (document.hidden) {
+          clearTimeout(redirectTimeout);
+          document.removeEventListener('visibilitychange', handleVisibilityChange);
+        }
+      };
+      
+      window.addEventListener('blur', handleBlur);
+      document.addEventListener('visibilitychange', handleVisibilityChange);
+    } else {
+      // Desktop: open Meta Horizon Worlds website in new tab
+      window.open('https://www.meta.com/experiences/horizon-worlds/', '_blank');
+    }
+  };
+
+  const handleButtonClick = () => {
+    if (!isExpanded) {
+      // First tap: expand the card to show carousel
+      setIsExpanded(true);
+    } else {
+      // Second tap: open Meta Horizon app
+      openMetaHorizonApp();
+    }
   };
 
   return (
@@ -117,9 +168,9 @@ const Screen3DigitalTwin = () => {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 2.2 }}
-          onClick={handleChooseBoost}
+          onClick={handleButtonClick}
         >
-          Claim in Meta Horizon
+          {isExpanded ? 'Claim in Meta Horizon' : 'Choose in-game boost'}
         </motion.button>
       </div>
     </motion.div>
