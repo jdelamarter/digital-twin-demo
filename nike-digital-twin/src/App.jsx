@@ -14,10 +14,10 @@ function App() {
       setCurrentScreen(2);
     }, 4000);
 
-    // Screen 2 displays for 4 seconds (at 4s mark, transitions to 3 at 8s mark)
+    // Screen 2 displays for 3 seconds (at 4s mark, transitions to 3 at 7s mark)
     const timer2 = setTimeout(() => {
       setCurrentScreen(3);
-    }, 8000);
+    }, 7000);
 
     return () => {
       clearTimeout(timer1);
@@ -51,7 +51,7 @@ function App() {
         )}
       </AnimatePresence>
       
-      <AnimatePresence mode="wait">
+      <AnimatePresence>
         {currentScreen === 1 && <Screen1Verifying key="screen1" />}
         {currentScreen === 2 && <Screen2Verified key="screen2" />}
         {currentScreen === 3 && <Screen3DigitalTwin key="screen3" />}
