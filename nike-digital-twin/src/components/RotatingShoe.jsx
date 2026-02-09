@@ -34,7 +34,7 @@ const RotatingShoe = () => {
   useEffect(() => {
     if (!imagesLoaded) return;
     
-    const fps = 25; // 25 frames per second
+    const fps = 32; // 32 frames per second
     const frameDuration = 1000 / fps; // milliseconds per frame
     
     const animate = (timestamp) => {

@@ -6,6 +6,7 @@ import './Screen3DigitalTwin.css';
 const Screen3DigitalTwin = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(1); // Start at index 1 to match current layout
+  const [dragOffset, setDragOffset] = useState(0); // Track real-time drag offset
 
   const boostCards = [
     '/boost-cards/card-1.png',
@@ -19,16 +20,27 @@ const Screen3DigitalTwin = () => {
     setIsExpanded(true);
   };
 
+  const handleDrag = (event, info) => {
+    // Update drag offset in real-time as user drags
+    setDragOffset(info.offset.x);
+  };
+
   const handleDragEnd = (event, info) => {
-    const threshold = 50; // Minimum drag distance to trigger a swipe
+    // Card dimensions for calculations
+    const fullCardWidth = 157;
+    const gap = 12;
+    const spacing = (fullCardWidth / 2) + gap + ((fullCardWidth * 0.77) / 2);
     
-    if (info.offset.x < -threshold && currentIndex < boostCards.length - 1) {
-      // Swiped left, go to next card
-      setCurrentIndex(currentIndex + 1);
-    } else if (info.offset.x > threshold && currentIndex > 0) {
-      // Swiped right, go to previous card
-      setCurrentIndex(currentIndex - 1);
-    }
+    // Calculate which card is closest to center based on drag offset
+    const offsetInCards = -info.offset.x / spacing;
+    const targetIndex = Math.round(currentIndex + offsetInCards);
+    
+    // Clamp to valid range
+    const newIndex = Math.max(0, Math.min(boostCards.length - 1, targetIndex));
+    
+    // Update index and reset drag offset
+    setCurrentIndex(newIndex);
+    setDragOffset(0);
   };
 
   return (
@@ -149,53 +161,58 @@ const Screen3DigitalTwin = () => {
           {isExpanded && (
             <motion.div
               className="boost-carousel-container"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              transition={{ duration: 0.3, delay: 0.1 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4, delay: 0.15 }}
             >
               <motion.div 
                 className="boost-cards-row"
                 drag="x"
                 dragConstraints={{ left: 0, right: 0 }}
-                dragElastic={0.1}
+                dragElastic={0.2}
+                onDrag={handleDrag}
                 onDragEnd={handleDragEnd}
               >
                 {boostCards.map((card, index) => {
-                  const position = index - currentIndex;
-                  const isCenter = position === 0;
-                  const isVisible = Math.abs(position) <= 1;
-                  
-                  // Calculate scale and opacity based on position
-                  const scale = isCenter ? 1 : 0.77; // 151/196 ≈ 0.77
-                  const opacity = isCenter ? 1 : 0.2;
-                  
-                  // Card dimensions - based on height 196px, width appears to be ~157px
-                  const fullCardWidth = 157; // Actual rendered card width
-                  const gap = 12; // Gap between card edges
-                  
-                  // Spacing calculation:
-                  // Distance from center of center card to center of adjacent card
-                  // = (fullCardWidth / 2) + gap + (fullCardWidth * 0.77 / 2)
+                  // Card dimensions
+                  const fullCardWidth = 157;
+                  const gap = 12;
                   const spacing = (fullCardWidth / 2) + gap + ((fullCardWidth * 0.77) / 2);
+                  
+                  // Calculate position with drag offset
+                  const basePosition = index - currentIndex;
+                  const dragOffsetInCards = dragOffset / spacing;
+                  const position = basePosition + dragOffsetInCards;
+                  
+                  // Calculate distance from center for smooth interpolation
+                  const distanceFromCenter = Math.abs(position);
+                  const isVisible = distanceFromCenter <= 2;
+                  
+                  // Smooth scale interpolation: 1.0 at center, 0.77 at distance 1+
+                  const scale = Math.max(0.77, 1 - (distanceFromCenter * 0.23));
+                  
+                  // Smooth opacity interpolation: 1.0 at center, 0.2 at distance 1+
+                  const targetOpacity = Math.max(0.2, 1 - (distanceFromCenter * 0.8));
                   
                   return (
                     <motion.div
                       key={index}
                       className="boost-card"
-                      animate={{
-                        scale,
-                        opacity: isVisible ? opacity : 0,
-                        x: position * spacing,
-                      }}
-                      transition={{
-                        duration: 0.5,
-                        ease: 'easeInOut'
-                      }}
                       style={{
                         position: 'absolute',
                         left: '50%',
                         marginLeft: `-${fullCardWidth / 2}px`,
+                      }}
+                      animate={{
+                        x: position * spacing,
+                        scale: scale,
+                        opacity: isVisible ? targetOpacity : 0,
+                      }}
+                      transition={{
+                        type: 'spring',
+                        stiffness: 300,
+                        damping: 30,
                       }}
                     >
                       <img src={card} alt={`Boost card ${index + 1}`} />
