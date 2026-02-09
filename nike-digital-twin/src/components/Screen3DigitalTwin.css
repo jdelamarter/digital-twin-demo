@@ -9,47 +9,28 @@
   right: 0;
   bottom: 0;
   overflow: hidden;
-  background-color: #080121;
-}
-
-/* Top safe area background */
-.screen3::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: env(safe-area-inset-top);
-  background-color: #080121;
-  z-index: 1;
-}
-
-/* Bottom safe area background */
-.screen3::after {
-  content: '';
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: env(safe-area-inset-bottom);
-  background-color: #080121;
+  background-color: transparent;
   z-index: 1;
 }
 
 .screen3-background {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #080121;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  background-color: transparent;
   background-image: url('/page3-background.png');
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
   z-index: 0;
+  /* Extend into safe areas */
+  margin: calc(-1 * env(safe-area-inset-top)) calc(-1 * env(safe-area-inset-right)) calc(-1 * env(safe-area-inset-bottom)) calc(-1 * env(safe-area-inset-left));
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
 .screen3-content {
@@ -61,7 +42,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  z-index: 2;
+  z-index: 1;
   padding-top: env(safe-area-inset-top);
   padding-bottom: env(safe-area-inset-bottom);
 }
@@ -70,7 +51,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-top: 16px;
+  margin-top: 38px;
   font-family: 'Optimistic Display', sans-serif;
   font-weight: 400;
   font-size: 12px;
@@ -93,7 +74,7 @@
   letter-spacing: -1.02px;
   color: #FFFFFF;
   text-align: center;
-  margin-top: 8px;
+  margin-top: 14px;
   margin-bottom: 0;
 }
 

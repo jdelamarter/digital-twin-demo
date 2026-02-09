@@ -7,8 +7,14 @@ import './App.css';
 
 function App() {
   const [currentScreen, setCurrentScreen] = useState(1);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   useEffect(() => {
+    // Mark initial load as complete after a brief moment
+    const initialTimer = setTimeout(() => {
+      setIsInitialLoad(false);
+    }, 100);
+
     // Screen 1 displays for 4 seconds
     const timer1 = setTimeout(() => {
       setCurrentScreen(2);
@@ -20,6 +26,7 @@ function App() {
     }, 7000);
 
     return () => {
+      clearTimeout(initialTimer);
       clearTimeout(timer1);
       clearTimeout(timer2);
     };
@@ -27,15 +34,37 @@ function App() {
 
   // Change body background color based on current screen
   useEffect(() => {
+    // Skip on initial load to prevent flash
+    if (isInitialLoad) return;
+
+    const html = document.documentElement;
+    const body = document.body;
+    const root = document.getElementById('root');
+    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+    
     if (currentScreen === 3) {
-      document.body.style.backgroundColor = '#080121';
+      // Change everything instantly at the same moment
+      html.classList.add('dark-theme');
+      body.classList.add('dark-theme');
+      root.classList.add('dark-theme');
+      if (metaThemeColor) {
+        metaThemeColor.setAttribute('content', '#221144');
+      }
     } else {
-      document.body.style.backgroundColor = '#FFFFFF';
+      html.classList.remove('dark-theme');
+      body.classList.remove('dark-theme');
+      root.classList.remove('dark-theme');
+      if (metaThemeColor) {
+        metaThemeColor.setAttribute('content', '#FFFFFF');
+      }
     }
-  }, [currentScreen]);
+  }, [currentScreen, isInitialLoad]);
 
   return (
     <div className="app">
+      {/* Viewport background that covers safe areas */}
+      <div className={`viewport-background ${currentScreen === 3 ? 'dark' : ''}`} />
+      
       {/* Persistent Nike Logo for screens 1 and 2 */}
       <AnimatePresence>
         {currentScreen <= 2 && (

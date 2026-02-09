@@ -136,9 +136,9 @@ const Screen3DigitalTwin = () => {
         
         <motion.div
           className="shoe-container"
-          initial={{ opacity: 0, scale: 0.95 }}
+          initial={{ opacity: 0, scale: 0.75 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
+          transition={{ duration: 0.5, delay: 0.8 }}
         >
           <RotatingShoe />
         </motion.div>

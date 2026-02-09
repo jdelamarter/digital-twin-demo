@@ -56,6 +56,10 @@ html {
   background-color: #FFFFFF;
 }
 
+html.dark-theme {
+  background-color: #221144;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -66,7 +70,10 @@ body {
   background-color: #FFFFFF;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  transition: background-color 0.3s ease;
+}
+
+body.dark-theme {
+  background-color: #221144;
 }
 
 #root {
@@ -75,4 +82,8 @@ body {
   min-height: 100%;
   overflow: hidden;
   background-color: #FFFFFF;
+}
+
+#root.dark-theme {
+  background-color: #221144;
 }
